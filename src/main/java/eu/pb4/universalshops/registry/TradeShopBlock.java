@@ -1,6 +1,7 @@
 package eu.pb4.universalshops.registry;
 
 import eu.pb4.polymer.core.api.block.PolymerHeadBlock;
+import eu.pb4.universalshops.compat.FlanCompat;
 import net.fabricmc.fabric.api.block.BlockAttackInteractionAware;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -105,7 +106,7 @@ public class TradeShopBlock extends BlockWithEntity implements PolymerHeadBlock,
             return ActionResult.FAIL;
         }
 
-        if (player instanceof ServerPlayerEntity serverPlayer && world.getBlockEntity(pos) instanceof TradeShopBlockEntity be) {
+        if (world instanceof ServerWorld serverWorld && player instanceof ServerPlayerEntity serverPlayer && world.getBlockEntity(pos) instanceof TradeShopBlockEntity be && FlanCompat.canInteract(serverWorld, serverPlayer, pos, FlanCompat.USESHOP)) {
             be.openGui(serverPlayer);
             return ActionResult.SUCCESS;
         }

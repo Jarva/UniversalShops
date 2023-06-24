@@ -26,6 +26,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -72,6 +73,10 @@ public class TradeShopBlockEntity extends BlockEntity implements RemappedInvento
         }
         if (this.owner != null) {
             nbt.put("Owner", NbtHelper.writeGameProfile(new NbtCompound(), this.owner));
+        }
+
+        if (this.hologramMode != null) {
+            nbt.putString("HologramMode", this.hologramMode.toString());
         }
 
         this.priceHandler.writeNbt(nbt);
@@ -166,7 +171,33 @@ public class TradeShopBlockEntity extends BlockEntity implements RemappedInvento
                 if (this.textDisplay.getHolder() != elementHolder) {
                     elementHolder.addElement(this.textDisplay);
                 }
+            } else if (this.hologramMode == HologramMode.AMOUNT) {
+                if ((this.world.getTime() % 32) != 0) {
+                    return;
+                }
+                var hasStock = this.stockHandler.getMaxAmount(null) != 0;
 
+                var icon = hasStock || ((this.world.getTime() / 12) & 2) == 0 ? this.stockHandler.icon() : Items.BARRIER.getDefaultStack();
+                this.itemDisplay.setItem(icon);
+
+                int lines = 1;
+                MutableText text = Text.empty();
+                if (this.stockHandler instanceof StockHandler.SingleItem singleItem) {
+                    text.append(Text.empty().append("×" + singleItem.value.getCount()));
+                } else {
+                    text.append(this.stockHandler.getStockName());
+                }
+
+                this.textDisplay.setText(text);
+                this.itemDisplay.setTranslation(new Vector3f(0, 0.25f + 0.28f * lines, 0));
+
+                if (this.itemDisplay.getHolder() != elementHolder) {
+                    elementHolder.addElement(this.itemDisplay);
+                }
+
+                if (this.textDisplay.getHolder() != elementHolder) {
+                    elementHolder.addElement(this.textDisplay);
+                }
             } else {
                 if ((this.world.getTime() % 12) != 0) {
                     return;
@@ -287,6 +318,7 @@ public class TradeShopBlockEntity extends BlockEntity implements RemappedInvento
 
     public enum HologramMode {
         FULL,
+        AMOUNT,
         ICON,
         DISABLED
     }

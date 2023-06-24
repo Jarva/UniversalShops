@@ -64,6 +64,7 @@
 
   "hologram_type.universal_shops.full": "Full",
   "hologram_type.universal_shops.icon": "Icon only",
+  "hologram_type.universal_shops.amount": "Amount only",
   "hologram_type.universal_shops.disabled": "Disabled",
 
   "block.universal_shops.trade_block": "Trade Shop",

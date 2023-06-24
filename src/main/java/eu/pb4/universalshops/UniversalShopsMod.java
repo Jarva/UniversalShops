@@ -1,11 +1,10 @@
 package eu.pb4.universalshops;
 
 import com.mojang.logging.LogUtils;
-import eu.pb4.polymer.common.api.PolymerCommonUtils;
 import eu.pb4.polymer.networking.api.PolymerServerNetworking;
-import eu.pb4.polymer.networking.api.client.PolymerClientNetworking;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import eu.pb4.universalshops.gui.setup.SelectItemGui;
+import eu.pb4.universalshops.compat.FlanCompat;
 import eu.pb4.universalshops.other.USCommands;
 import eu.pb4.universalshops.registry.USRegistry;
 import eu.pb4.universalshops.trade.PriceHandler;
@@ -31,6 +30,7 @@ public class UniversalShopsMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        FlanCompat.register();
         GenericModInfo.build(FabricLoader.getInstance().getModContainer(MOD_ID).get());
         USRegistry.register();
         PriceHandler.init();

@@ -12,6 +12,8 @@ import eu.pb4.universalshops.other.TextUtil;
 import net.minecraft.item.*;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 public class ItemModificatorGui extends SimpleGui implements ExtraGui {
     private final ItemStackHolder holder;
@@ -76,6 +78,9 @@ public class ItemModificatorGui extends SimpleGui implements ExtraGui {
         return new GuiElementInterface() {
             @Override
             public ItemStack getItemStack() {
+                if (holder.getItemStack().isEmpty()) {
+                    return new ItemStack(Items.LIGHT_BLUE_STAINED_GLASS_PANE).setCustomName(Text.empty().append("No Item Selected").setStyle(Style.EMPTY.withItalic(false)));
+                }
                 return holder.getItemStack();
             }
 

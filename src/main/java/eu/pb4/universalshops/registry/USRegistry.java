@@ -12,7 +12,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class USRegistry {
-
     public static final TradeShopBlock BLOCK = register("trade_block", new TradeShopBlock(false, AbstractBlock.Settings.create().nonOpaque().strength(2.8F, 3600000.0F)), Registries.BLOCK);
     public static final TradeShopBlock BLOCK_ADMIN = register("admin_trade_block", new TradeShopBlock(true, AbstractBlock.Settings.create().nonOpaque().strength(-1.0F, 3600000.0F).dropsNothing()), Registries.BLOCK);
     public static final BlockEntityType<TradeShopBlockEntity> BLOCK_ENTITY_TYPE = register("trade_block", FabricBlockEntityTypeBuilder.create(TradeShopBlockEntity::new, BLOCK, BLOCK_ADMIN).build(), Registries.BLOCK_ENTITY_TYPE);
